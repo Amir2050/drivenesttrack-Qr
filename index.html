@@ -1,76 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>DriveNestTrack VIN Scanner</title>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #111;
-      color: #fff;
-    }
-    #reader {
-      width: 300px;
-      margin: 20px auto;
-    }
-    #result {
-      margin-top: 20px;
-      padding: 10px;
-      background: #222;
-      border-radius: 8px;
-    }
-    .vin {
-      color: #0f0;
-      font-weight: bold;
-    }
-    .vehicle-data {
-      text-align: left;
-      margin-top: 20px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DriveNest VIN Scanner</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🚗 DriveNestTrack: VIN Scanner</h1>
-  <div id="reader"></div>
-  <div id="result">Scan a QR or Barcode containing a VIN...</div>
-  <div id="vehicle-info" class="vehicle-data"></div>
-
-  <script>
-    function isValidVIN(vin) {
-      return /^[A-HJ-NPR-Z0-9]{17}$/.test(vin);
-    }
-
-    function decodeVIN(vin) {
-      fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${vin}?format=json`)
-        .then(res => res.json())
-        .then(data => {
-          const details = data.Results.filter(d => d.Value && d.Value !== "Not Applicable").slice(0, 10);
-          const html = details.map(item => `<p><strong>${item.Variable}</strong>: ${item.Value}</p>`).join('');
-          document.getElementById("vehicle-info").innerHTML = `<h3>✅ Vehicle Details</h3>${html}`;
-        })
-        .catch(err => {
-          document.getElementById("vehicle-info").innerHTML = `<p style="color:red">Error fetching data from NHTSA</p>`;
-        });
-    }
-
-    function onScanSuccess(decodedText, decodedResult) {
-      document.getElementById('result').innerHTML = `Scanned: <span class="vin">${decodedText}</span>`;
-      if (isValidVIN(decodedText)) {
-        decodeVIN(decodedText);
-        html5QrcodeScanner.clear(); // stop scanning after success
-      } else {
-        document.getElementById("vehicle-info").innerHTML = `<p style="color:orange">Invalid VIN format</p>`;
-      }
-    }
-
-    const html5QrcodeScanner = new Html5QrcodeScanner("reader", {
-      fps: 10,
-      qrbox: 250,
-      rememberLastUsedCamera: true,
-    });
-
-    html5QrcodeScanner.render(onScanSuccess);
-  </script>
+  <h1>Scan VIN QR Code</h1>
+  <video id="video" playsinline></video>
+  <div id="output"></div>
+  <script src="https://unpkg.com/@zxing/browser@latest"></script>
+  <script src="script.js"></script>
 </body>
 </html>
