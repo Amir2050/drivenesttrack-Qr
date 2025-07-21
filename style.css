@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #121212;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+video {
+  width: 90%;
+  max-width: 600px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+#output {
+  margin-top: 20px;
+  text-align: left;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+}
